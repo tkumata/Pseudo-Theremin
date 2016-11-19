@@ -1,0 +1,326 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		891F96FB1DDFE17800570D65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891F96FA1DDFE17800570D65 /* AppDelegate.swift */; };
+		891F96FD1DDFE17800570D65 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891F96FC1DDFE17800570D65 /* ViewController.swift */; };
+		891F97001DDFE17800570D65 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891F96FE1DDFE17800570D65 /* Main.storyboard */; };
+		891F97031DDFE17800570D65 /* Pseudo_Theremin.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 891F97011DDFE17800570D65 /* Pseudo_Theremin.xcdatamodeld */; };
+		891F97051DDFE17800570D65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 891F97041DDFE17800570D65 /* Assets.xcassets */; };
+		891F97081DDFE17800570D65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891F97061DDFE17800570D65 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		891F96F71DDFE17800570D65 /* Pseudo Theremin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pseudo Theremin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		891F96FA1DDFE17800570D65 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		891F96FC1DDFE17800570D65 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		891F96FF1DDFE17800570D65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		891F97021DDFE17800570D65 /* Pseudo_Theremin.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pseudo_Theremin.xcdatamodel; sourceTree = "<group>"; };
+		891F97041DDFE17800570D65 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		891F97071DDFE17800570D65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		891F97091DDFE17800570D65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		891F96F41DDFE17800570D65 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		891F96EE1DDFE17800570D65 = {
+			isa = PBXGroup;
+			children = (
+				891F96F91DDFE17800570D65 /* Pseudo Theremin */,
+				891F96F81DDFE17800570D65 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		891F96F81DDFE17800570D65 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				891F96F71DDFE17800570D65 /* Pseudo Theremin.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		891F96F91DDFE17800570D65 /* Pseudo Theremin */ = {
+			isa = PBXGroup;
+			children = (
+				891F96FA1DDFE17800570D65 /* AppDelegate.swift */,
+				891F96FC1DDFE17800570D65 /* ViewController.swift */,
+				891F96FE1DDFE17800570D65 /* Main.storyboard */,
+				891F97041DDFE17800570D65 /* Assets.xcassets */,
+				891F97061DDFE17800570D65 /* LaunchScreen.storyboard */,
+				891F97091DDFE17800570D65 /* Info.plist */,
+				891F97011DDFE17800570D65 /* Pseudo_Theremin.xcdatamodeld */,
+			);
+			path = "Pseudo Theremin";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		891F96F61DDFE17800570D65 /* Pseudo Theremin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 891F970C1DDFE17800570D65 /* Build configuration list for PBXNativeTarget "Pseudo Theremin" */;
+			buildPhases = (
+				891F96F31DDFE17800570D65 /* Sources */,
+				891F96F41DDFE17800570D65 /* Frameworks */,
+				891F96F51DDFE17800570D65 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pseudo Theremin";
+			productName = "Pseudo Theremin";
+			productReference = 891F96F71DDFE17800570D65 /* Pseudo Theremin.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		891F96EF1DDFE17800570D65 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "KUMATA Tomokatsu";
+				TargetAttributes = {
+					891F96F61DDFE17800570D65 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = RA8AYBBYPE;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 891F96F21DDFE17800570D65 /* Build configuration list for PBXProject "Pseudo Theremin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 891F96EE1DDFE17800570D65;
+			productRefGroup = 891F96F81DDFE17800570D65 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				891F96F61DDFE17800570D65 /* Pseudo Theremin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		891F96F51DDFE17800570D65 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				891F97081DDFE17800570D65 /* LaunchScreen.storyboard in Resources */,
+				891F97051DDFE17800570D65 /* Assets.xcassets in Resources */,
+				891F97001DDFE17800570D65 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		891F96F31DDFE17800570D65 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				891F97031DDFE17800570D65 /* Pseudo_Theremin.xcdatamodeld in Sources */,
+				891F96FD1DDFE17800570D65 /* ViewController.swift in Sources */,
+				891F96FB1DDFE17800570D65 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		891F96FE1DDFE17800570D65 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				891F96FF1DDFE17800570D65 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		891F97061DDFE17800570D65 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				891F97071DDFE17800570D65 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		891F970A1DDFE17800570D65 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		891F970B1DDFE17800570D65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		891F970D1DDFE17800570D65 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RA8AYBBYPE;
+				INFOPLIST_FILE = "Pseudo Theremin/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.kmt.Pseudo-Theremin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		891F970E1DDFE17800570D65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RA8AYBBYPE;
+				INFOPLIST_FILE = "Pseudo Theremin/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.kmt.Pseudo-Theremin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		891F96F21DDFE17800570D65 /* Build configuration list for PBXProject "Pseudo Theremin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				891F970A1DDFE17800570D65 /* Debug */,
+				891F970B1DDFE17800570D65 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		891F970C1DDFE17800570D65 /* Build configuration list for PBXNativeTarget "Pseudo Theremin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				891F970D1DDFE17800570D65 /* Debug */,
+				891F970E1DDFE17800570D65 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		891F97011DDFE17800570D65 /* Pseudo_Theremin.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				891F97021DDFE17800570D65 /* Pseudo_Theremin.xcdatamodel */,
+			);
+			currentVersion = 891F97021DDFE17800570D65 /* Pseudo_Theremin.xcdatamodel */;
+			path = Pseudo_Theremin.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 891F96EF1DDFE17800570D65 /* Project object */;
+}
