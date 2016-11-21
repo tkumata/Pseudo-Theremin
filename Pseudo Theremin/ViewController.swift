@@ -19,7 +19,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     // for sine wave sound.
     var hertz: Float32 = 440.1
-    let repeatPeriod: Double = 0.5
+    let repeatPeriod: Double = 1.0
     let audioEngine = AVAudioEngine()
     let player = AVAudioPlayerNode()
     
@@ -92,7 +92,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         session.startRunning()
         
         //
-        timer = Timer.scheduledTimer(timeInterval: repeatPeriod+0.2,
+        timer = Timer.scheduledTimer(timeInterval: repeatPeriod,
                                      target: self,
                                      selector: #selector(self.playSineWaveSound),
                                      userInfo: nil,
@@ -107,6 +107,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     // 周波数 hertz の正弦波の音を生成して再生する。
     func playSineWaveSound() {
 //        print(hertz)
+        soundEnded()
         let audioFormat = player.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
         let mixer = audioEngine.mainMixerNode
@@ -125,8 +126,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         audioEngine.attach(player)
         audioEngine.connect(player, to: mixer, format: audioFormat)
-//        player.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
-        player.scheduleBuffer(buffer, completionHandler: soundEnded)
+        player.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
+//        player.scheduleBuffer(buffer, completionHandler: soundEnded)
         
         do {
             try audioEngine.start()
