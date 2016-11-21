@@ -17,22 +17,22 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     @IBOutlet weak var brightnessLabel: UILabel!
     @IBOutlet weak var buttonBackground: UILabel!
     
-    // For sine wave sound.
+    // MARK: - For sine wave sound.
     var audioHertz: Float32 = 440.1
     let repeatPeriod: Double = 1.0
     let audioEngine = AVAudioEngine()
     let player = AVAudioPlayerNode()
     
-    // For timer.
+    // MARK: - For timer.
     var timer: Timer!
     
-    // For camera.
+    // MARK: - For camera.
     var input: AVCaptureDeviceInput!
     var output: AVCaptureVideoDataOutput!
     var session: AVCaptureSession!
     var camera: AVCaptureDevice!
 
-
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -66,33 +66,42 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         buttonBackground.layer.backgroundColor = UIColor(red: 42/255, green: 192/255, blue: 255/255, alpha: 1.0).cgColor
         buttonBackground.layer.zPosition = 0
 
-        // Preparing camera.
+        // MARK: Preparing camera.
         session = AVCaptureSession()
         session.sessionPreset = AVCaptureSessionPresetHigh
-        for caputureDevice: Any in AVCaptureDevice.devices() {
-            // 前面カメラを取得
-            if (caputureDevice as AnyObject).position == AVCaptureDevicePosition.front {
-                camera = caputureDevice as? AVCaptureDevice
+        let devicesSession = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInDuoCamera,
+                                                                           .builtInTelephotoCamera,
+                                                                           .builtInWideAngleCamera],
+                                                             mediaType: AVMediaTypeVideo,
+                                                             position: .front)
+        for caputureDevice in (devicesSession?.devices)! {
+            // if() で確実に front が取得できるように。
+            if caputureDevice.position == AVCaptureDevicePosition.front {
+                camera = caputureDevice
             }
         }
+        
         do {
-            input = try AVCaptureDeviceInput(device: camera) as AVCaptureDeviceInput
+            input = try AVCaptureDeviceInput(device: camera)
         } catch let error as NSError {
             print(error)
         }
+        
         if session.canAddInput(input) {
             session.addInput(input)
+            
+            output = AVCaptureVideoDataOutput()
+            
+            if session.canAddOutput(output) {
+                session.addOutput(output)
+                output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCVPixelFormatType_32BGRA)]
+                output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+                output.alwaysDiscardsLateVideoFrames = true
+                session.startRunning()
+            }
         }
-        output = AVCaptureVideoDataOutput()
-        if session.canAddOutput(output) {
-            session.addOutput(output)
-        }
-        output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCVPixelFormatType_32BGRA)]
-        output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
-        output.alwaysDiscardsLateVideoFrames = true
-        session.startRunning()
         
-        //
+        // MARK: タイマーで正弦波の音を繰り返し再生する。
         timer = Timer.scheduledTimer(timeInterval: repeatPeriod,
                                      target: self,
                                      selector: #selector(self.playSineWaveSound),
@@ -105,18 +114,23 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         // Dispose of any resources that can be recreated.
     }
 
-    // 周波数 audioHertz の正弦波の音を生成して再生する。
+    // MARK: - 周波数 audioHertz の正弦波の音を生成して再生する。
     func playSineWaveSound() {
-        soundEnded()
+        // audioEngine がすでに動いてるところに再度 start() すると落ちるので止める。
+        stopSineWaveSound()
+        
+        // 正弦波を作る。
         let audioFormat = player.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
         let mixer = audioEngine.mainMixerNode
         let length = Float(repeatPeriod) * sampleRate
+        
+        // buffer 作る。
         let buffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: UInt32(length))
         buffer.frameLength = UInt32(length)
         let channels = Int(audioFormat.channelCount)
         
-        for ch in 0 ..< channels { // 左右チャンネル分を回す (重点)
+        for ch in 0 ..< channels { // 左右チャンネル分を回す。重点。
             let samples = buffer.floatChannelData?[ch]
             
             for n in 0 ..< Int(buffer.frameLength) {
@@ -127,7 +141,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         audioEngine.attach(player)
         audioEngine.connect(player, to: mixer, format: audioFormat)
         player.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
-//        player.scheduleBuffer(buffer, completionHandler: soundEnded)
+        // player.scheduleBuffer(buffer, completionHandler: soundEnded)
         
         do {
             try audioEngine.start()
@@ -137,7 +151,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
     
-    func soundEnded() {
+    func stopSineWaveSound() {
         if audioEngine.isRunning {
             player.stop()
             audioEngine.disconnectNodeInput(player)
@@ -147,33 +161,41 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
     }
     
-    // カメラから輝度を取得
+    // MARK: - Meta data から輝度を取得。
     func captureOutput(_ captureOutput: AVCaptureOutput, didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
         
-        let rawMetaData = CMCopyDictionaryOfAttachments(nil, sampleBuffer, CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))
+        let rawMetaData = CMCopyDictionaryOfAttachments(nil,
+                                                        sampleBuffer,
+                                                        CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))
         let metaData = CFDictionaryCreateMutableCopy(nil, 0, rawMetaData) as NSMutableDictionary
         let exifData = metaData.value(forKey: "{Exif}") as? NSMutableDictionary
-//        print("EXIF DATA: \(exifData)")
+        // print("EXIF DATA: \(exifData)")
+
+        // Exif から Brightness だけ取り出す。
         let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
         self.brightnessLabel.text = String(describing: brightnessValue!)
+        
+        // TODO: 輝度から周波数へ変換するアルゴリズムも考える。
+        // 現状は単純に pow() してるだけ。
         let rawHertz = pow(10.0, (brightnessValue as! Float))
+        // 小数点三桁以降は切り捨て。
         let convertedHertz = Float32(Int(rawHertz * 10)) * 10
         self.hertzLabelOutlet.text = String(convertedHertz)
         audioHertz = convertedHertz
     }
     
-    
+    // MARK: -
     func hoge() {
 //        FMSynthesizer.sharedSynth().play(440.0, modulatorAmplitude: 0.8)
 //        playSineWaveSound(hertz: 440.1)
     }
     
-    // 音量上げる予定
+    // MARK: - 音量上げる。
     @IBAction func volUpAction(_ sender: UIButton) {
     }
 
-    // 音量下げる予定
+    // MARK: - 音量下げる。
     @IBAction func volDownAction(_ sender: UIButton) {
     }
 
