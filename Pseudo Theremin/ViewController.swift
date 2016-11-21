@@ -138,8 +138,11 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             }
         }
         
+        // Attach and connet.
         audioEngine.attach(player)
         audioEngine.connect(player, to: mixer, format: audioFormat)
+        
+        // Schedule.
         player.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
         // player.scheduleBuffer(buffer, completionHandler: soundEnded)
         
