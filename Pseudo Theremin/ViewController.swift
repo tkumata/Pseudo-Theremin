@@ -17,21 +17,22 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     @IBOutlet weak var brightnessLabel: UILabel!
     @IBOutlet weak var buttonBackground: UILabel!
     
-    // for sine wave sound.
-    var hertz: Float32 = 440.1
+    // For sine wave sound.
+    var audioHertz: Float32 = 440.1
     let repeatPeriod: Double = 1.0
     let audioEngine = AVAudioEngine()
     let player = AVAudioPlayerNode()
     
+    // For timer.
     var timer: Timer!
     
-    // for camera.
+    // For camera.
     var input: AVCaptureDeviceInput!
     var output: AVCaptureVideoDataOutput!
     var session: AVCaptureSession!
     var camera: AVCaptureDevice!
-    
-    //
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -104,9 +105,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         // Dispose of any resources that can be recreated.
     }
 
-    // 周波数 hertz の正弦波の音を生成して再生する。
+    // 周波数 audioHertz の正弦波の音を生成して再生する。
     func playSineWaveSound() {
-//        print(hertz)
         soundEnded()
         let audioFormat = player.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
@@ -120,7 +120,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             let samples = buffer.floatChannelData?[ch]
             
             for n in 0 ..< Int(buffer.frameLength) {
-                samples?[n] = sinf(Float(2.0 * M_PI) * hertz * Float(n) / sampleRate)
+                samples?[n] = sinf(Float(2.0 * M_PI) * audioHertz * Float(n) / sampleRate)
             }
         }
         
@@ -131,7 +131,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         do {
             try audioEngine.start()
-//            print("start.")
             player.play()
         } catch let error {
             print(error)
@@ -140,8 +139,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     func soundEnded() {
         if audioEngine.isRunning {
-//            print("stop.")
-//            player.stop()
+            player.stop()
             audioEngine.disconnectNodeInput(player)
             audioEngine.detach(player)
             audioEngine.stop()
@@ -159,28 +157,23 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 //        print("EXIF DATA: \(exifData)")
         let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
         self.brightnessLabel.text = String(describing: brightnessValue!)
-        let a = pow(10.0, (brightnessValue as! Float))
-        let b = Float32(Int(a * 10)) * 10
-        self.hertzLabelOutlet.text = String(b)
-        hertz = b
+        let rawHertz = pow(10.0, (brightnessValue as! Float))
+        let convertedHertz = Float32(Int(rawHertz * 10)) * 10
+        self.hertzLabelOutlet.text = String(convertedHertz)
+        audioHertz = convertedHertz
     }
     
     
-    func checkBrightness() {
-        // Get ambient brightness.
-        
-        // Convert brightness to frequency.
-        
-        // Give frequency and play audio.
+    func hoge() {
 //        FMSynthesizer.sharedSynth().play(440.0, modulatorAmplitude: 0.8)
 //        playSineWaveSound(hertz: 440.1)
     }
     
-    // 音量上げる
+    // 音量上げる予定
     @IBAction func volUpAction(_ sender: UIButton) {
     }
 
-    // 音量下げる
+    // 音量下げる予定
     @IBAction func volDownAction(_ sender: UIButton) {
     }
 
