@@ -19,9 +19,10 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     // MARK: - For sine wave sound.
     var audioHertz: Float32 = 440.1
-    let repeatPeriod: Double = 0.4
+    let repeatPeriod: Double = 0.1
     let audioEngine = AVAudioEngine()
     let player = AVAudioPlayerNode()
+    var audioBuffer: AVAudioPCMBuffer!
     
     // MARK: - For timer.
     var timer: Timer!
@@ -103,11 +104,12 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         
         // MARK: タイマーで正弦波の音を繰り返し再生する。
-        timer = Timer.scheduledTimer(timeInterval: repeatPeriod,
-                                     target: self,
-                                     selector: #selector(self.playSineWaveSound),
-                                     userInfo: nil,
-                                     repeats: true)
+        setupAudioEngine()
+//        timer = Timer.scheduledTimer(timeInterval: repeatPeriod,
+//                                     target: self,
+//                                     selector: #selector(self.playSineWaveSound),
+//                                     userInfo: nil,
+//                                     repeats: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -116,46 +118,50 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
 
     // MARK: - 周波数 audioHertz の正弦波の音を生成して再生する。
-    func playSineWaveSound() {
-        // audioEngine がすでに動いてるところに再度 start() すると落ちるので止める。
-        stopSineWaveSound()
-        
-        // 正弦波を作る。
+    func setupAudioEngine() {
         let audioFormat = player.outputFormat(forBus: 0)
-        let sampleRate = Float(audioFormat.sampleRate)
         let mixer = audioEngine.mainMixerNode
-        let length = Float(repeatPeriod) * sampleRate
-        
-        // buffer 作る。
-        let buffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: UInt32(length))
-        buffer.frameLength = UInt32(length)
-        let channels = Int(audioFormat.channelCount)
-        
-        for ch in 0 ..< channels { // 左右チャンネル分を回す。重点。
-            let samples = buffer.floatChannelData?[ch]
-            
-            for n in 0 ..< Int(buffer.frameLength) {
-                samples?[n] = sinf(Float(2.0 * M_PI) * audioHertz * Float(n) / sampleRate)
-            }
-        }
-        
-        // Attach and connet.
         audioEngine.attach(player)
         audioEngine.connect(player, to: mixer, format: audioFormat)
-        
-        // Schedule.
-        player.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
-        // player.scheduleBuffer(buffer, completionHandler: soundEnded)
         
         do {
             try audioEngine.start()
             player.play()
-            self.hertzLabelOutlet.text = String(audioHertz)
         } catch let error {
             print(error)
         }
+        
     }
-    
+    // Making sine wave sound.
+    func changeFrequency() {
+        if player.isPlaying {
+            player.stop()
+        }
+        
+        let audioFormat = player.outputFormat(forBus: 0)
+        let sampleRate = Float(audioFormat.sampleRate)
+        let length = Float(repeatPeriod) * sampleRate
+        
+        // Making audio buffer.
+        audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: UInt32(length))
+        audioBuffer.frameLength = UInt32(length)
+        let channels = Int(audioFormat.channelCount)
+        
+        for ch in 0 ..< channels { // 左右チャンネル分を回す。重点。
+            let samples = audioBuffer.floatChannelData?[ch]
+            
+            for n in 0 ..< Int(audioBuffer.frameLength) {
+                samples?[n] = sinf(Float(2.0 * M_PI) * audioHertz * Float(n) / sampleRate)
+            }
+        }
+        
+        // Schedule.
+        //player.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
+        player.scheduleBuffer(audioBuffer, completionHandler: nil)
+        
+        player.play()
+        self.hertzLabelOutlet.text = String(audioHertz)
+    }
     func stopSineWaveSound() {
         if audioEngine.isRunning {
             player.stop()
@@ -174,7 +180,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         // CPU 負荷を抑える単純な仕掛け。
         // これで CPU usage 10% -> 4.5% へ
-        if i % 20 == 0 {
+        if i % 5 == 0 {
             let rawMetaData = CMCopyDictionaryOfAttachments(nil,
                                                             sampleBuffer,
                                                             CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))
@@ -192,6 +198,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             // 小数点三桁以降は切り捨て。
             let convertedHertz = Float32(Int(rawHertz * 10)) * 10
             audioHertz = convertedHertz
+            changeFrequency()
         }
         i += 1
     }
