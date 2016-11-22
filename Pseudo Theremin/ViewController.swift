@@ -126,6 +126,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         do {
             try audioEngine.start()
+            player.volume = 0.5
             player.play()
         } catch let error {
             print(error)
@@ -211,10 +212,12 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     // MARK: - 音量上げる。
     @IBAction func volUpAction(_ sender: UIButton) {
+        self.player.volume += 0.1
     }
 
     // MARK: - 音量下げる。
     @IBAction func volDownAction(_ sender: UIButton) {
+        self.player.volume -= 0.1
     }
 
 
