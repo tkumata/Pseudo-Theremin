@@ -15,8 +15,8 @@
 		891F97081DDFE17800570D65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891F97061DDFE17800570D65 /* LaunchScreen.storyboard */; };
 		891F97111DDFE1B100570D65 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 891F97101DDFE1B100570D65 /* AVFoundation.framework */; };
 		891F97131DE030B700570D65 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891F97121DE030B700570D65 /* File.swift */; };
+		895DD24B1DE50A3500DD54DB /* IMG_0043.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 895DD24A1DE50A3500DD54DB /* IMG_0043.mp4 */; };
 		8998C8CF1DE1160D004AF65D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8998C8CD1DE10F5F004AF65D /* ImageIO.framework */; };
-		89DA57681DE2CF1500B5C873 /* IMG_0140.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 89DA57671DE2CF1500B5C873 /* IMG_0140.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,9 +30,9 @@
 		891F97091DDFE17800570D65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		891F97101DDFE1B100570D65 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		891F97121DE030B700570D65 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		895DD24A1DE50A3500DD54DB /* IMG_0043.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = IMG_0043.mp4; sourceTree = "<group>"; };
 		89853BDE1DE2B5BF00F65462 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8998C8CD1DE10F5F004AF65D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		89DA57671DE2CF1500B5C873 /* IMG_0140.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = IMG_0140.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				89853BDE1DE2B5BF00F65462 /* README.md */,
-				89DA57671DE2CF1500B5C873 /* IMG_0140.mp4 */,
+				895DD24A1DE50A3500DD54DB /* IMG_0043.mp4 */,
 				891F96F91DDFE17800570D65 /* Pseudo Theremin */,
 				891F96F81DDFE17800570D65 /* Products */,
 				891F970F1DDFE1B100570D65 /* Frameworks */,
@@ -152,9 +152,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89DA57681DE2CF1500B5C873 /* IMG_0140.mp4 in Resources */,
 				891F97081DDFE17800570D65 /* LaunchScreen.storyboard in Resources */,
 				891F97051DDFE17800570D65 /* Assets.xcassets in Resources */,
+				895DD24B1DE50A3500DD54DB /* IMG_0043.mp4 in Resources */,
 				891F97001DDFE17800570D65 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

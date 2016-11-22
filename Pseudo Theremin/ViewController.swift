@@ -105,11 +105,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         // MARK: タイマーで正弦波の音を繰り返し再生する。
         setupAudioEngine()
-//        timer = Timer.scheduledTimer(timeInterval: repeatPeriod,
-//                                     target: self,
-//                                     selector: #selector(self.playSineWaveSound),
-//                                     userInfo: nil,
-//                                     repeats: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -135,10 +130,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
     // Making sine wave sound.
     func changeFrequency() {
-        if player.isPlaying {
-            player.stop()
-        }
-        
         let audioFormat = player.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
         let length = Float(repeatPeriod) * sampleRate
@@ -158,9 +149,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         // Schedule.
         //player.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
-        player.scheduleBuffer(audioBuffer, completionHandler: nil)
+        player.scheduleBuffer(audioBuffer)
         
-        player.play()
         self.hertzLabelOutlet.text = String(audioHertz)
     }
     func stopSineWaveSound() {
@@ -181,7 +171,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         // CPU 負荷を抑える単純な仕掛け。
         // これで CPU usage 10% -> 4.5% へ
-        if i % 5 == 0 {
+        if i % 3 == 0 {
             let rawMetaData = CMCopyDictionaryOfAttachments(nil,
                                                             sampleBuffer,
                                                             CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))
