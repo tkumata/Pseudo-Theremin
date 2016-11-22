@@ -19,7 +19,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     // MARK: - For sine wave sound.
     var audioHertz: Float32 = 440.1
-    let repeatPeriod: Double = 1.0
+    let repeatPeriod: Double = 0.4
     let audioEngine = AVAudioEngine()
     let player = AVAudioPlayerNode()
     
@@ -31,6 +31,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     var output: AVCaptureVideoDataOutput!
     var session: AVCaptureSession!
     var camera: AVCaptureDevice!
+    var i: Int = 1
 
     // MARK: -
     override func viewDidLoad() {
@@ -149,6 +150,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         do {
             try audioEngine.start()
             player.play()
+            self.hertzLabelOutlet.text = String(audioHertz)
         } catch let error {
             print(error)
         }
@@ -167,32 +169,38 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     // MARK: - Meta data から輝度を取得。
     func captureOutput(_ captureOutput: AVCaptureOutput, didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        
-        let rawMetaData = CMCopyDictionaryOfAttachments(nil,
-                                                        sampleBuffer,
-                                                        CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))
-        let metaData = CFDictionaryCreateMutableCopy(nil, 0, rawMetaData) as NSMutableDictionary
-        let exifData = metaData.value(forKey: "{Exif}") as? NSMutableDictionary
-        // print("EXIF DATA: \(exifData)")
-
-        // Exif から Brightness だけ取り出す。
-        let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
-        self.brightnessLabel.text = String(describing: brightnessValue!)
-        
-        // TODO: 輝度から周波数へ変換するアルゴリズムも考える。
-        // 現状は単純に pow() してるだけ。
-        let rawHertz = pow(10.0, (brightnessValue as! Float))
-        // 小数点三桁以降は切り捨て。
-        let convertedHertz = Float32(Int(rawHertz * 10)) * 10
-        self.hertzLabelOutlet.text = String(convertedHertz)
-        audioHertz = convertedHertz
+        if i > 100 {
+            i = 1
+        }
+        // CPU 負荷を抑える単純な仕掛け。
+        // これで CPU usage 10% -> 4.5% へ
+        if i % 20 == 0 {
+            let rawMetaData = CMCopyDictionaryOfAttachments(nil,
+                                                            sampleBuffer,
+                                                            CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))
+            let metaData = CFDictionaryCreateMutableCopy(nil, 0, rawMetaData) as NSMutableDictionary
+            let exifData = metaData.value(forKey: "{Exif}") as? NSMutableDictionary
+            // print("EXIF DATA: \(exifData)")
+            
+            // Exif から BrightnessValue だけ取り出す。
+            let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
+            self.brightnessLabel.text = String(describing: brightnessValue!)
+            
+            // TODO: 輝度から周波数へ変換するアルゴリズムも考える。
+            // 現状は単純に pow() してるだけ。
+            let rawHertz = pow(10.0, (brightnessValue as! Float))
+            // 小数点三桁以降は切り捨て。
+            let convertedHertz = Float32(Int(rawHertz * 10)) * 10
+            audioHertz = convertedHertz
+        }
+        i += 1
     }
     
     // MARK: -
-    func hoge() {
+//    func hoge() {
 //        FMSynthesizer.sharedSynth().play(440.0, modulatorAmplitude: 0.8)
 //        playSineWaveSound(hertz: 440.1)
-    }
+//    }
     
     // MARK: - 音量上げる。
     @IBAction func volUpAction(_ sender: UIButton) {
