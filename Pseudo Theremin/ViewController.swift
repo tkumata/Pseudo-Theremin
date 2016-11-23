@@ -39,33 +39,40 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.view.backgroundColor = .green
+        self.view.backgroundColor = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 1.0)
         
         // Hertz label attribute.
         hertzLabelOutlet.layer.borderWidth = 1.0
         hertzLabelOutlet.layer.cornerRadius = 5.0
         hertzLabelOutlet.layer.borderColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0).cgColor
         
+        // Brightness label attribute.
+        brightnessLabel.layer.borderWidth = 1.0
+        brightnessLabel.layer.cornerRadius = 5.0
+        brightnessLabel.layer.borderColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0).cgColor
+        
         // Up button attribute.
+        volUpButtonOutlet.tintColor = .black
         volUpButtonOutlet.layer.borderWidth = 5.0
         volUpButtonOutlet.layer.cornerRadius = 10.0
-        volUpButtonOutlet.layer.borderColor = UIColor(red: 255/255, green: 192/255, blue: 192/255, alpha: 1.0).cgColor
-        volUpButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 0/255, alpha: 1.0).cgColor
+        volUpButtonOutlet.layer.borderColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0).cgColor
+        volUpButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 122/255, alpha: 1.0).cgColor
         volUpButtonOutlet.layer.zPosition = 2
         
         // Down button attribute.
+        volDownButtonOutlet.tintColor = .black
         volDownButtonOutlet.layer.borderWidth = 5.0
         volDownButtonOutlet.layer.cornerRadius = 10.0
-        volDownButtonOutlet.layer.borderColor = UIColor(red: 255/255, green: 192/255, blue: 192/255, alpha: 1.0).cgColor
-        volDownButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 0/255, alpha: 1.0).cgColor
+        volDownButtonOutlet.layer.borderColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0).cgColor
+        volDownButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 122/255, alpha: 1.0).cgColor
         volDownButtonOutlet.layer.zPosition = 2
         
-        // Background attribute of up/down button.
+        // Background of up/down button.
         buttonBackground.text = ""
         buttonBackground.layer.borderWidth = 1.0
         buttonBackground.layer.cornerRadius = 10.0
-        buttonBackground.layer.borderColor = UIColor(red: 42/255, green: 192/255, blue: 255/255, alpha: 1.0).cgColor
-        buttonBackground.layer.backgroundColor = UIColor(red: 42/255, green: 192/255, blue: 255/255, alpha: 1.0).cgColor
+        buttonBackground.layer.borderColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0).cgColor
+        buttonBackground.layer.backgroundColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0).cgColor
         buttonBackground.layer.zPosition = 0
 
         // MARK: Preparing camera.
@@ -151,7 +158,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         //player.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
         player.scheduleBuffer(audioBuffer)
         
-        self.hertzLabelOutlet.text = String(audioHertz)
+        self.hertzLabelOutlet.text = "Freq: " + String(audioHertz) + " Hz"
     }
     func stopSineWaveSound() {
         if audioEngine.isRunning {
