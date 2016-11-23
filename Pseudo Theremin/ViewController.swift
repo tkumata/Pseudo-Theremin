@@ -42,21 +42,23 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         self.view.backgroundColor = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 1.0)
         
         // Hertz label attribute.
-        hertzLabelOutlet.layer.borderWidth = 1.0
-        hertzLabelOutlet.layer.cornerRadius = 5.0
-        hertzLabelOutlet.layer.borderColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0).cgColor
+//        hertzLabelOutlet.layer.borderWidth = 1.0
+//        hertzLabelOutlet.layer.cornerRadius = 5.0
+//        hertzLabelOutlet.layer.borderColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0).cgColor
+        hertzLabelOutlet.isHidden = true
         
         // Brightness label attribute.
-        brightnessLabel.layer.borderWidth = 1.0
-        brightnessLabel.layer.cornerRadius = 5.0
-        brightnessLabel.layer.borderColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0).cgColor
+//        brightnessLabel.layer.borderWidth = 1.0
+//        brightnessLabel.layer.cornerRadius = 5.0
+//        brightnessLabel.layer.borderColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0).cgColor
+        brightnessLabel.isHidden = true
         
         // Up button attribute.
         volUpButtonOutlet.tintColor = .black
         volUpButtonOutlet.layer.borderWidth = 5.0
         volUpButtonOutlet.layer.cornerRadius = 10.0
         volUpButtonOutlet.layer.borderColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0).cgColor
-        volUpButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 122/255, alpha: 1.0).cgColor
+        volUpButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 0/255, alpha: 1.0).cgColor
         volUpButtonOutlet.layer.zPosition = 2
         
         // Down button attribute.
@@ -64,7 +66,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         volDownButtonOutlet.layer.borderWidth = 5.0
         volDownButtonOutlet.layer.cornerRadius = 10.0
         volDownButtonOutlet.layer.borderColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0).cgColor
-        volDownButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 122/255, alpha: 1.0).cgColor
+        volDownButtonOutlet.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 0/255, alpha: 1.0).cgColor
         volDownButtonOutlet.layer.zPosition = 2
         
         // Background of up/down button.
@@ -119,7 +121,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - 周波数 audioHertz の正弦波の音を生成して再生する。
+    // MARK: - Setup audio engine.
     func setupAudioEngine() {
         let audioFormat = player.outputFormat(forBus: 0)
         let mixer = audioEngine.mainMixerNode
@@ -135,7 +137,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         
     }
-    // Making sine wave sound.
+    
+    // MARK: - Making audio buffer for sine wave sound.
     func changeFrequency() {
         let audioFormat = player.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
@@ -158,16 +161,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         //player.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
         player.scheduleBuffer(audioBuffer)
         
-        self.hertzLabelOutlet.text = "Freq: " + String(audioHertz) + " Hz"
-    }
-    func stopSineWaveSound() {
-        if audioEngine.isRunning {
-            player.stop()
-            audioEngine.disconnectNodeInput(player)
-            audioEngine.detach(player)
-            audioEngine.stop()
-            audioEngine.reset()
-        }
+//        self.hertzLabelOutlet.text = "Freq: " + String(audioHertz) + " Hz"
     }
     
     // MARK: - Meta data から輝度を取得。
@@ -188,7 +182,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             
             // Exif から BrightnessValue だけ取り出す。
             let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
-            self.brightnessLabel.text = String(describing: brightnessValue!)
+//            self.brightnessLabel.text = String(describing: brightnessValue!)
             
             // TODO: 輝度から周波数へ変換するアルゴリズムも考える。
             // 現状は単純に pow() してるだけ。
