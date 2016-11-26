@@ -69,9 +69,10 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         // Background of up/down button.
         buttonBackground.text = ""
         buttonBackground.layer.borderWidth = 1.0
-        buttonBackground.layer.cornerRadius = 10.0
+        //buttonBackground.layer.cornerRadius = 10.0
         buttonBackground.layer.borderColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0).cgColor
-        buttonBackground.layer.backgroundColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0).cgColor
+        //buttonBackground.layer.backgroundColor = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0).cgColor
+        buttonBackground.backgroundColor = .white
         buttonBackground.layer.zPosition = 0
 
         // MARK: Preparing camera.
