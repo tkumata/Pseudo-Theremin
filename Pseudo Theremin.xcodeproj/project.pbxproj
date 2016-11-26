@@ -16,7 +16,6 @@
 		891F97111DDFE1B100570D65 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 891F97101DDFE1B100570D65 /* AVFoundation.framework */; };
 		891F97131DE030B700570D65 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891F97121DE030B700570D65 /* File.swift */; };
 		895DD24B1DE50A3500DD54DB /* IMG_0043.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 895DD24A1DE50A3500DD54DB /* IMG_0043.mp4 */; };
-		8998C8CF1DE1160D004AF65D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8998C8CD1DE10F5F004AF65D /* ImageIO.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +39,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8998C8CF1DE1160D004AF65D /* ImageIO.framework in Frameworks */,
 				891F97111DDFE1B100570D65 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

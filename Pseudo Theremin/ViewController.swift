@@ -19,22 +19,19 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     // MARK: - For sine wave sound.
     var audioHertz: Float32 = 440.1
-    let repeatPeriod: Double = 0.1
+    let audioRepeatPeriod: Double = 0.1
     let audioEngine = AVAudioEngine()
-    let player = AVAudioPlayerNode()
+    let audioPlayerNode = AVAudioPlayerNode()
     var audioBuffer: AVAudioPCMBuffer!
     
-    // MARK: - For timer.
-    var timer: Timer!
-    
     // MARK: - For camera.
-    var input: AVCaptureDeviceInput!
-    var output: AVCaptureVideoDataOutput!
-    var session: AVCaptureSession!
-    var camera: AVCaptureDevice!
+    var cameraInput: AVCaptureDeviceInput!
+    var cameraOutput = AVCaptureVideoDataOutput()
+    var cameraSession = AVCaptureSession()
+    var cameraDevice: AVCaptureDevice!
     var i: Int = 1
 
-    // MARK: -
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -78,41 +75,47 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         buttonBackground.layer.zPosition = 0
 
         // MARK: Preparing camera.
-        session = AVCaptureSession()
-        session.sessionPreset = AVCaptureSessionPresetHigh
+        cameraSession.sessionPreset = AVCaptureSessionPresetHigh
         let devicesSession = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInDuoCamera,
                                                                            .builtInTelephotoCamera,
                                                                            .builtInWideAngleCamera],
                                                              mediaType: AVMediaTypeVideo,
                                                              position: .front)
+        
         for caputureDevice in (devicesSession?.devices)! {
             // if() で確実に front が取得できるように。
             if caputureDevice.position == AVCaptureDevicePosition.front {
-                camera = caputureDevice
+                cameraDevice = caputureDevice
             }
         }
         
         do {
-            input = try AVCaptureDeviceInput(device: camera)
+            cameraInput = try AVCaptureDeviceInput(device: cameraDevice)
         } catch let error as NSError {
             print(error)
         }
         
-        if session.canAddInput(input) {
-            session.addInput(input)
+        // カメラの入力が存在すれば、
+        if cameraSession.canAddInput(cameraInput) {
+            // Session に追加する。
+            cameraSession.addInput(cameraInput)
             
-            output = AVCaptureVideoDataOutput()
-            
-            if session.canAddOutput(output) {
-                session.addOutput(output)
-                output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCVPixelFormatType_32BGRA)]
-                output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
-                output.alwaysDiscardsLateVideoFrames = true
-                session.startRunning()
+            // カメラの出力が存在すれば、
+            if cameraSession.canAddOutput(cameraOutput) {
+                // Session に追加する。
+                cameraSession.addOutput(cameraOutput)
+                
+                // 出力のプロパティを設定する。
+                cameraOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCVPixelFormatType_32BGRA)]
+                cameraOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+                cameraOutput.alwaysDiscardsLateVideoFrames = true
+                
+                // Session を開始する。
+                cameraSession.startRunning()
             }
         }
         
-        // MARK: タイマーで正弦波の音を繰り返し再生する。
+        // MARK: Call function which setting up audio engine.
         setupAudioEngine()
     }
 
@@ -123,26 +126,25 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
     // MARK: - Setup audio engine.
     func setupAudioEngine() {
-        let audioFormat = player.outputFormat(forBus: 0)
+        let audioFormat = audioPlayerNode.outputFormat(forBus: 0)
         let mixer = audioEngine.mainMixerNode
-        audioEngine.attach(player)
-        audioEngine.connect(player, to: mixer, format: audioFormat)
+        audioEngine.attach(audioPlayerNode)
+        audioEngine.connect(audioPlayerNode, to: mixer, format: audioFormat)
         
         do {
             try audioEngine.start()
-            player.volume = 0.5
-            player.play()
+            audioPlayerNode.volume = 0.5
+            audioPlayerNode.play()
         } catch let error {
             print(error)
         }
-        
     }
     
     // MARK: - Making audio buffer for sine wave sound.
     func changeFrequency() {
-        let audioFormat = player.outputFormat(forBus: 0)
+        let audioFormat = audioPlayerNode.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
-        let length = Float(repeatPeriod) * sampleRate
+        let length = Float(audioRepeatPeriod) * sampleRate
         
         // Making audio buffer.
         audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: UInt32(length))
@@ -159,17 +161,20 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         // Schedule.
         //player.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
-        player.scheduleBuffer(audioBuffer)
+        audioPlayerNode.scheduleBuffer(audioBuffer)
         
-//        self.hertzLabelOutlet.text = "Freq: " + String(audioHertz) + " Hz"
+        // self.hertzLabelOutlet.text = "Freq: " + String(audioHertz) + " Hz"
     }
     
     // MARK: - Meta data から輝度を取得。
-    func captureOutput(_ captureOutput: AVCaptureOutput, didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
+    func captureOutput(_ captureOutput: AVCaptureOutput,
+                       didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
+        
         if i > 100 {
             i = 1
         }
+        
         // CPU 負荷を抑える単純な仕掛け。
         // これで CPU usage 10% -> 4.5% へ
         if i % 3 == 0 {
@@ -182,16 +187,17 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             
             // Exif から BrightnessValue だけ取り出す。
             let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
-//            self.brightnessLabel.text = String(describing: brightnessValue!)
+            // self.brightnessLabel.text = String(describing: brightnessValue!)
             
             // TODO: 輝度から周波数へ変換するアルゴリズムも考える。
             // 現状は単純に pow() してるだけ。
             let rawHertz = pow(10.0, (brightnessValue as! Float))
-            // 小数点三桁以降は切り捨て。
+            // 小数点三桁以降は切り捨て。x.xx まで。
             let convertedHertz = Float32(Int(rawHertz * 10)) * 10
             audioHertz = convertedHertz
             changeFrequency()
         }
+        
         i += 1
     }
     
@@ -203,12 +209,12 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     // MARK: - 音量上げる。
     @IBAction func volUpAction(_ sender: UIButton) {
-        self.player.volume += 0.1
+        self.audioPlayerNode.volume += 0.1
     }
 
     // MARK: - 音量下げる。
     @IBAction func volDownAction(_ sender: UIButton) {
-        self.player.volume -= 0.1
+        self.audioPlayerNode.volume -= 0.1
     }
 
 
