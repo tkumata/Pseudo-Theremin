@@ -19,7 +19,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     @IBOutlet weak var codeLabelOutlet: UILabel!
     
     // MARK: - For sine wave sound.
-    var audioHertz: Float32 = 261.626
     let audioRepeatPeriod: Double = 0.1
     let audioEngine = AVAudioEngine()
     let audioPlayerNode = AVAudioPlayerNode()
@@ -52,7 +51,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         1046.502 // C
     ]
     var startOK: Bool = false
-    let mathPI = Float(M_PI)
     
     // MARK: - For camera.
     var cameraInput: AVCaptureDeviceInput!
@@ -60,7 +58,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     var cameraSession = AVCaptureSession()
     var cameraDevice: AVCaptureDevice!
     var i: Int = 1
-    var cameraBrightness: Float = 0.0
     var maxBrightnessAgv: Float = 0.0
 
     // MARK: - viewDidLoad
@@ -149,7 +146,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         
         // MARK: Call function which setting up audio engine.
-        //setupAudioEngine()
+        setupAudioEngine()
     }
 
     override func didReceiveMemoryWarning() {
@@ -174,7 +171,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
     
     // MARK: - Making audio buffer for sine wave sound.
-    func changeFrequency() {
+    func changeFrequency(hz: Float) {
         let audioFormat = audioPlayerNode.outputFormat(forBus: 0)
         let sampleRate = Float(audioFormat.sampleRate)
         let length = Float(audioRepeatPeriod) * sampleRate
@@ -188,16 +185,16 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             let samples = audioBuffer.floatChannelData?[ch]
             
             for n in 0 ..< Int(audioBuffer.frameLength) {
-                samples?[n] = sinf(Float(2.0 * M_PI) * audioHertz * Float(n) / sampleRate)
+                samples?[n] = sinf(Float(2.0 * M_PI) * hz * Float(n) / sampleRate)
             }
         }
         
         // Schedule.
-        //player.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
+        //audioPlayerNode.scheduleBuffer(audioBuffer, at: nil, options: .loops, completionHandler: nil)
         audioPlayerNode.scheduleBuffer(audioBuffer)
         
         // Print to label.
-        self.hertzLabelOutlet.text = "Freq: " + String(audioHertz) + " Hz"
+        self.hertzLabelOutlet.text = "Freq: " + String(hz) + " Hz"
     }
     
     // MARK: - Meta data から輝度を取得。
@@ -210,7 +207,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         
         // CPU 負荷を抑える単純な仕掛け。
-        // これで CPU usage 10% -> 4.5% へ
         if i % 3 == 0 {
             let rawMetaData = CMCopyDictionaryOfAttachments(nil,
                                                             sampleBuffer,
@@ -225,53 +221,45 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             self.brightnessLabel.text = String(describing: floatBrightnessValue)
             
             if startOK {
-                audioHertz = generateFreq(bv: floatBrightnessValue)
-                changeFrequency()
+                let audioHertz = generateFreq(bv: floatBrightnessValue)
+                changeFrequency(hz: audioHertz)
             } else {
-                self.cameraBrightness = floatBrightnessValue
-                easyCalibration()
+                easyCalibration(bv: floatBrightnessValue)
             }
         }
         
         i += 1
     }
     
-    // MARK: -
-//    func hoge() {
-//        FMSynthesizer.sharedSynth().play(440.0, modulatorAmplitude: 0.8)
-//        playSineWaveSound(hertz: 440.1)
-//    }
-    
     // MARK: - 音量上げる。
     @IBAction func volUpAction(_ sender: UIButton) {
         self.audioPlayerNode.volume += 0.1
     }
-
+    
     // MARK: - 音量下げる。
     @IBAction func volDownAction(_ sender: UIButton) {
         self.audioPlayerNode.volume -= 0.1
     }
 
-
     // MARK: - Calibration.
-    func easyCalibration() {
-        print("Calibration.")
+    func easyCalibration(bv: Float) {
+        print("Calibration BEGIN.")
         var bvArray = [Float]()
         var sum: Float = 0.0
         
-        for _ in 0 ... 100 {
-            bvArray.append(cameraBrightness)
+        for _ in 0 ... 50 {
+            bvArray.append(bv)
         }
         
-        for i in bvArray {
-            sum += i
+        for s in bvArray {
+            sum += s
         }
         
         maxBrightnessAgv = sum / Float(bvArray.count)
         self.codeLabelOutlet.text = String(maxBrightnessAgv)
         
         startOK = true
-        setupAudioEngine()
+        print("Calibration END.")
     }
 
     // MARK: - Generate frequency.
