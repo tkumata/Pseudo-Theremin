@@ -14,7 +14,6 @@
 		891F97051DDFE17800570D65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 891F97041DDFE17800570D65 /* Assets.xcassets */; };
 		891F97081DDFE17800570D65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 891F97061DDFE17800570D65 /* LaunchScreen.storyboard */; };
 		891F97111DDFE1B100570D65 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 891F97101DDFE1B100570D65 /* AVFoundation.framework */; };
-		891F97131DE030B700570D65 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891F97121DE030B700570D65 /* File.swift */; };
 		895DD24B1DE50A3500DD54DB /* IMG_0043.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 895DD24A1DE50A3500DD54DB /* IMG_0043.mp4 */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		891F97071DDFE17800570D65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		891F97091DDFE17800570D65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		891F97101DDFE1B100570D65 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		891F97121DE030B700570D65 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		895DD24A1DE50A3500DD54DB /* IMG_0043.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = IMG_0043.mp4; sourceTree = "<group>"; };
 		89853BDE1DE2B5BF00F65462 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8998C8CD1DE10F5F004AF65D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -70,7 +68,6 @@
 			children = (
 				891F96FA1DDFE17800570D65 /* AppDelegate.swift */,
 				891F96FC1DDFE17800570D65 /* ViewController.swift */,
-				891F97121DE030B700570D65 /* File.swift */,
 				891F96FE1DDFE17800570D65 /* Main.storyboard */,
 				891F97041DDFE17800570D65 /* Assets.xcassets */,
 				891F97061DDFE17800570D65 /* LaunchScreen.storyboard */,
@@ -165,7 +162,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				891F97031DDFE17800570D65 /* Pseudo_Theremin.xcdatamodeld in Sources */,
-				891F97131DE030B700570D65 /* File.swift in Sources */,
 				891F96FD1DDFE17800570D65 /* ViewController.swift in Sources */,
 				891F96FB1DDFE17800570D65 /* AppDelegate.swift in Sources */,
 			);

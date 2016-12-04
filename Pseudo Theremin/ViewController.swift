@@ -16,13 +16,43 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     @IBOutlet weak var volDownButtonOutlet: UIButton!
     @IBOutlet weak var brightnessLabel: UILabel!
     @IBOutlet weak var buttonBackground: UILabel!
+    @IBOutlet weak var codeLabelOutlet: UILabel!
     
     // MARK: - For sine wave sound.
-    var audioHertz: Float32 = 440.1
+    var audioHertz: Float32 = 261.626
     let audioRepeatPeriod: Double = 0.1
     let audioEngine = AVAudioEngine()
     let audioPlayerNode = AVAudioPlayerNode()
     var audioBuffer: AVAudioPCMBuffer!
+    let codeArray: Array<Float> = [
+        261.626, // C
+        277.183, // C#
+        293.665, // D
+        311.127, // D#
+        329.628, // E
+        349.228, // F
+        369.994, // F#
+        391.995, // G
+        415.305, // G#
+        440.000, // A
+        466.164, // A#
+        493.883, // B
+        523.251, // C
+        554.365,
+        587.330,
+        622.254,
+        659.255,
+        698.456,
+        739.989,
+        783.991,
+        830.609,
+        880.000, // A
+        932.328,
+        987.767,
+        1046.502 // C
+    ]
+    var startOK: Bool = false
+    let mathPI = Float(M_PI)
     
     // MARK: - For camera.
     var cameraInput: AVCaptureDeviceInput!
@@ -30,6 +60,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     var cameraSession = AVCaptureSession()
     var cameraDevice: AVCaptureDevice!
     var i: Int = 1
+    var cameraBrightness: Float = 0.0
+    var maxBrightnessAgv: Float = 0.0
 
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -117,7 +149,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         
         // MARK: Call function which setting up audio engine.
-        setupAudioEngine()
+        //setupAudioEngine()
     }
 
     override func didReceiveMemoryWarning() {
@@ -189,15 +221,16 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             
             // Exif から BrightnessValue だけ取り出す。
             let brightnessValue = (exifData as AnyObject).object(forKey: "BrightnessValue")
-            self.brightnessLabel.text = String(describing: brightnessValue!)
+            let floatBrightnessValue = (brightnessValue as! Float)
+            self.brightnessLabel.text = String(describing: floatBrightnessValue)
             
-            // TODO: 輝度から周波数へ変換するアルゴリズムも考える。
-            // 現状は単純に pow() してるだけ。
-            let rawHertz = pow(10.0, (brightnessValue as! Float))
-            // 小数点三桁以降は切り捨て。x.xx まで。
-            let convertedHertz = Float32(Int(rawHertz * 10)) * 10
-            audioHertz = convertedHertz
-            changeFrequency()
+            if startOK {
+                audioHertz = generateFreq(bv: floatBrightnessValue)
+                changeFrequency()
+            } else {
+                self.cameraBrightness = floatBrightnessValue
+                easyCalibration()
+            }
         }
         
         i += 1
@@ -217,6 +250,51 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     // MARK: - 音量下げる。
     @IBAction func volDownAction(_ sender: UIButton) {
         self.audioPlayerNode.volume -= 0.1
+    }
+
+
+    // MARK: - Calibration.
+    func easyCalibration() {
+        print("Calibration.")
+        var bvArray = [Float]()
+        var sum: Float = 0.0
+        
+        for _ in 0 ... 100 {
+            bvArray.append(cameraBrightness)
+        }
+        
+        for i in bvArray {
+            sum += i
+        }
+        
+        maxBrightnessAgv = sum / Float(bvArray.count)
+        self.codeLabelOutlet.text = String(maxBrightnessAgv)
+        
+        startOK = true
+        setupAudioEngine()
+    }
+
+    // MARK: - Generate frequency.
+    func generateFreq(bv: Float) -> Float {
+        var hz: Float32
+
+        // TODO: 計算式を(なるべく)環境に合わせる。
+        var index = 0
+        let indexFloat = (bv * Float(codeArray.count-1)) / maxBrightnessAgv
+        index = Int(indexFloat)
+        index -= 1
+        
+        if index >= codeArray.count {
+            index = codeArray.count - 1
+        }
+        
+        if index < 0 {
+            index = 0
+        }
+        
+        hz = codeArray[index]
+
+        return hz
     }
 
 
