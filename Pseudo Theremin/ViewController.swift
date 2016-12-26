@@ -24,19 +24,19 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     let audioPlayerNode = AVAudioPlayerNode()
     var audioBuffer: AVAudioPCMBuffer!
     let codeArray: Array<Float> = [
-        261.626, // C
+        261.626, // C Do
         277.183, // C#
-        293.665, // D
+        293.665, // D Re
         311.127, // D#
-        329.628, // E
-        349.228, // F
+        329.628, // E Mi
+        349.228, // F Fa
         369.994, // F#
-        391.995, // G
+        391.995, // G So
         415.305, // G#
-        440.000, // A
+        440.000, // A Ra
         466.164, // A#
-        493.883, // B
-        523.251, // C
+        493.883, // B Shi
+        523.251, // C Do
         554.365,
         587.330,
         622.254,
